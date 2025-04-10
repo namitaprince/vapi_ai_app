@@ -73,22 +73,24 @@ const checkAvailability = (req, res) => {
         return res.status(400).json({ error: 'input_text is required' });
       }
   
-      // Use chrono to parse natural language
+      // Parse natural language to JS Date using chrono-node
       const parsedDate = chrono.parseDate(input_text);
   
       if (!parsedDate) {
         return res.status(400).json({ error: 'Could not parse input_text as a valid date' });
       }
   
-      // Convert parsed JS Date to Luxon DateTime in IST
+      // Convert to Luxon DateTime in IST
       const istDateTime = DateTime.fromJSDate(parsedDate, { zone: 'Asia/Kolkata' });
   
-      // Convert to ISO UTC format
-      const isoDateTime = istDateTime.toUTC().toISO();
+      // Convert to UTC ISO format
+      const timeMin = istDateTime.toUTC().toISO();
+      const timeMax = istDateTime.plus({ hours: 1 }).toUTC().toISO();
   
       return res.json({
         message: 'Parsed input_text successfully',
-        isoDateTime,
+        timeMin,
+        timeMax
       });
   
     } catch (error) {
@@ -96,5 +98,6 @@ const checkAvailability = (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   };
+  
 
 module.exports = { makeOutboundCall, checkAvailability };

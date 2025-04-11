@@ -87,8 +87,8 @@ const checkAvailability = (req, res) => {
       const timeMin = istDateTime.toUTC().toISO();
       const timeMax = istDateTime.plus({ hours: 1 }).toUTC().toISO();
       
-      console.log("Parsed timeMin (UTC):", timeMin);
-      console.log("Parsed timeMax (UTC):", timeMax);
+      console.log(`Parsed timeMin (UTC): ${timeMin}`);
+      console.log(`Parsed timeMax (UTC): ${timeMax}`);
 
   
       return res.json({
